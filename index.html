@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="index.css">
+  <title>Codifica</title>
+</head>
+<body>
+  <header>
+    <h1>Passinho do Romano</h1>
+  </header>
+
+  <section>
+    <div class="mensagem">
+      <input type="text" name="mensagem" id="msg" placeholder="Digite aqui sua mensagem:">
+    </div>
+
+      <select name="select" id="select">
+        <option value="0" id="0">Escolha:</option>
+        <option value="base64" id="64">Base 64</option>
+        <option value="cifraDeCesar" id="cesar">Cifra de César</option>
+      </select>
+
+      <div class="radioButton">
+        <div>
+          <input type="radio" name="bola" value="codificar" id="codificar">
+          <label for="codificar">
+            Codificar
+          </label>
+        </div>
+
+        <div>
+          <input type="radio" name="bola" value="decodificar" id="decodificar">
+          <label for="codificar">
+            Decodificar
+          </label>
+        </div>
+
+        <div class="increm">
+          Incremento da Cifra de César:
+          <input type="text" name="incremento" id="inc">
+        </div>
+      </div>
+
+      <button id="botaoCodifica" onclick="codifica()">Ação</button>
+
+      <div  class="mensagem">
+        <input type="text" name="retorno" id="retorno" placeholder="A mensagem codificada aparecerá aqui">
+      </div>
+
+      
+
+  </section>
+
+  <footer>
+
+    &copy; Nodja Moama 
+
+  </footer>
+  <script src="index.js"></script>
+</body>
+</html>
