@@ -1,7 +1,12 @@
 var codificar = document.querySelector('#codificar');
 var decodificar = document.querySelector('#decodificar');
 var botao = document.querySelector('#botaoCodifica');
+var msgEntrada = document.querySelector('#msg');
+var msgSaida = document.querySelector('#retorno');
+var selecionarCodigo = document.querySelector('#select')
 
+
+// mudar texto do botão de acordo com a seleção radio
 codificar.addEventListener("click", function(){
   botao.innerText = "Codificar Mensagem"
 })
@@ -10,8 +15,8 @@ decodificar.addEventListener('click', function(){
   botao.innerText = "Decodificar Mensagem";
 })
 
+//mostra div de incremento quando selecionada a cifra de cesar
 
-var selecionarCodigo = document.querySelector('#select')
 selecionarCodigo.addEventListener('change', function(){
   if (selecionarCodigo.value == '0' || selecionarCodigo.value == 'base64') {
     document.querySelector('.increm').style.display = 'none';
@@ -19,6 +24,74 @@ selecionarCodigo.addEventListener('change', function(){
     document.querySelector('.increm').style.display = 'flex';
   }
 })
+
+//codificando Base64
+
+
+botao.addEventListener('click', (function (noRecarg) {
+  noRecarg.preventDefault();
+  criptografar(msgEntrada.value) 
+}))
+
+function criptografar(texto) {
+  if (selecionarCodigo.value == 'base64' && botao.innerText == 'Codificar Mensagem') {
+    var resultCripto64 = btoa(texto);
+    msgSaida.value = resultCripto64;
+  } else if (selecionarCodigo.value == 'cifraDeCesar' && botao.innerText == 'Codificar Mensagem') {
+    var resultCesar = codificarCesar(msgEntrada.value);
+    msgSaida.value = resultCesar;
+  } else if (selecionarCodigo.value == 'base64' && botao.innerText == 'Decodificar Mensagem') {
+    var resultDecripto64 = atob(texto) 
+    msgSaida.value = resultDecripto64;
+  } else if (selecionarCodigo.value == 'cifraDeCesar' && botao.innerText == 'Decodificar Mensagem') {
+    var resultDecriptoCesar = decodificarCesar(msgEntrada.value);
+    msgSaida.value = resultDecriptoCesar;
+  } else {
+    alert('Verifique se marcou todas as opções do formulário')
+  }
+  
+}
+
+
+
+
+// codificando em Base 64
+
+// function codifica64(texto) {
+//   var msgCode64 = btoa(texto)
+//   return msgCode64
+// }
+
+// // decodificando em Base 64
+
+// function decodifica64(texto) {
+//   var msgCode64 = atob(texto)
+//   return msgCode64
+// }
+
+
+
+
+
+
+
+
+
+//essa função eu estava puxando do botão con onclick, porem nao deu certo
+// function codifica() {
+//   var codif = document.querySelector('#codificar')
+//   if (codif.addEventListener('click') === true) {
+//     if (selecionarCodigo.value === 'base64') {
+//       var msg = document.querySelector('#msg');
+//       var codificada = btoa(msg.value);
+//     document.querySelector('#retorno').innerText = codificada;
+//     } else {
+//       alert('Selecionar a Criptografia que deseja!')
+//     }
+//   }
+
+// }
+
 
 
 //codificando em Base64
