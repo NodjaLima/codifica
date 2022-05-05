@@ -3,7 +3,9 @@ var decodificar = document.querySelector('#decodificar');
 var botao = document.querySelector('#botaoCodifica');
 var msgEntrada = document.querySelector('#msg');
 var msgSaida = document.querySelector('#retorno');
-var selecionarCodigo = document.querySelector('#select')
+var selecionarCodigo = document.querySelector('#select');
+var incremento = document.querySelector('#inc');
+
 
 
 // mudar texto do botão de acordo com a seleção radio
@@ -25,7 +27,7 @@ selecionarCodigo.addEventListener('change', function(){
   }
 })
 
-//codificando Base64
+//codificando Base64 e validando seleções
 
 
 botao.addEventListener('click', (function (noRecarg) {
@@ -38,158 +40,95 @@ function criptografar(texto) {
     var resultCripto64 = btoa(texto);
     msgSaida.value = resultCripto64;
   } else if (selecionarCodigo.value == 'cifraDeCesar' && botao.innerText == 'Codificar Mensagem') {
-    var resultCesar = codificarCesar(msgEntrada.value);
+    var resultCesar = cifraDeCesar(msgEntrada.value, +incremento.value);
     msgSaida.value = resultCesar;
   } else if (selecionarCodigo.value == 'base64' && botao.innerText == 'Decodificar Mensagem') {
     var resultDecripto64 = atob(texto) 
     msgSaida.value = resultDecripto64;
   } else if (selecionarCodigo.value == 'cifraDeCesar' && botao.innerText == 'Decodificar Mensagem') {
-    var resultDecriptoCesar = decodificarCesar(msgEntrada.value);
+    var resultDecriptoCesar = cesarDecifrado(msgEntrada.value, +incremento.value);
     msgSaida.value = resultDecriptoCesar;
   } else {
-    alert('Verifique se marcou todas as opções do formulário')
+    alert('Verifique se marcou todas as opções do formulário');
   }
   
 }
 
 
+// codificando em cifra de cesar
+
+function cifraDeCesar(texto, increment) {
+var entrada = texto.split('');
+var numeroCesar = [];
+var retornoCesar = [];
+for (i=0; i < entrada.length ; i++) {
+  if(entrada[i].charCodeAt() > 64 && entrada[i].charCodeAt() < 91) {
+    var aplicaCifra = (entrada[i].charCodeAt() - 65 + increment) % 26;
+    numeroCesar.push(aplicaCifra + 65);
+  } else if (entrada[i].charCodeAt() >= 97 && entrada[i].charCodeAt() <= 122) {
+    aplicaCifra = (entrada[i].charCodeAt() - 97 + increment) % 26;
+    numeroCesar.push(aplicaCifra + 97);
+  } else {
+    numeroCesar.push(entrada[i].charCodeAt())
+    }
+  }
+
+  for (var j = 0; j < numeroCesar.length ; j++) {
+          retornoCesar.push(String.fromCharCode(numeroCesar[j]))
+      }
+      return retornoCesar.join('');
+    
+}
 
 
-// codificando em Base 64
-
-// function codifica64(texto) {
-//   var msgCode64 = btoa(texto)
-//   return msgCode64
-// }
-
-// // decodificando em Base 64
-
-// function decodifica64(texto) {
-//   var msgCode64 = atob(texto)
-//   return msgCode64
-// }
 
 
+// // // decodificando em cifra de césar
+
+function cesarDecifrado(texto, increment) {
+  var guardaMensagem = texto.split('')
+  var msgCriptografada = []
+  var cesarNumero = []
+
+  for (let i = 0; i < guardaMensagem.length; i++) {
+      if (guardaMensagem[i].charCodeAt() >= 65 && guardaMensagem[i].charCodeAt() <= 90) {
+          let testando = ((guardaMensagem[i].charCodeAt()) - 65 - increment) % 26
+          cesarNumero.push((testando < 0 ? testando + 26 : testando) + 65)
+      } else if (guardaMensagem[i].charCodeAt() >= 97 && guardaMensagem[i].charCodeAt() <= 122) {
+          let testando = ((guardaMensagem[i].charCodeAt()) - 97 - increment) % 26
+          cesarNumero.push((testando < 0 ? testando + 26 : testando) + 97)
+      } else {
+          cesarNumero.push(guardaMensagem[i].charCodeAt())
+      }
+  }
+  for (var j = 0; cesarNumero.length > j; j++) {
+      msgCriptografada.push(String.fromCharCode(cesarNumero[j]))
+  }
+  return msgCriptografada.join('')
+
+}
 
 
 
+// function cifraDeCesar(increment) {
+//   var string = msgEntrada.value;
+//   var string1 = string.toUpperCase();
+//   var msgCifrada = '';
+//   var resto = 26 - increment;
 
-
-
-
-//essa função eu estava puxando do botão con onclick, porem nao deu certo
-// function codifica() {
-//   var codif = document.querySelector('#codificar')
-//   if (codif.addEventListener('click') === true) {
-//     if (selecionarCodigo.value === 'base64') {
-//       var msg = document.querySelector('#msg');
-//       var codificada = btoa(msg.value);
-//     document.querySelector('#retorno').innerText = codificada;
+//   for(i=0; i < string1.length; i++){
+//     var convertAsc = string1[i].charCodeAt();
+//     var convert1 = String.fromCharCode(convertAsc + increment);
+//     var convert2 = String.fromCharCode(convertAsc - resto);
+//     if (convertAsc >= 65 && convertAsc < 65 + resto) {
+//       msgCifrada += convert1;
+//     } else if (convertAsc >= 65 + resto && convertAsc <= 90) {
+//       msgCifrada += convert2;
 //     } else {
-//       alert('Selecionar a Criptografia que deseja!')
+//       msgCifrada += string1[i];
 //     }
-//   }
-
-// }
-
-
-
-//codificando em Base64
-
-
-
-// ​selecionarCodigo​.​addEventListener​(​'change'​,​ ​function​(​)​ ​{ 
-//   ​    ​if​ ​(​selecionarCodigo​.​value​ ​===​ ​"1"​)​ ​{ 
-//   ​        ​document​.​getElementById​(​"someDiv"​)​.​style​.​display​ ​=​ ​'block' 
-//   ​    ​}​ ​else​ ​{ 
-//   ​        ​document​.​getElementById​(​"someDiv"​)​.​style​.​display​ ​=​ ​'none' 
-   
-//   ​    ​}
-
-// var opcao = 'Cifra de César';
-// var select = document.querySelector('#select');
-// var increm = document.querySelector('.increm')
-// for(i=0; i > select.option.legth; i++) {
-//   if (select.option[i].text === opcao) {
-//     increm.style.backgroundColor = 'red';
-//     break;
-//   }
-// }
-
-
-  // var incremento = document.querySelector('#cesar');
-  // var select = document.querySelector('#select');
-  // var i = 2
-
-  // if (select[i]) {
-  //   incremento.style.display = 'flex';
-  // }
-
-
-// var mostraincremento = document.querySelector('#cesar')
-// mostraincremento.addEventListener('click select', function(){
-//   document.querySelector('.increm').style.display = 'flex';
-// })
-
-// função para aparecer campo incremento quando selecionada a cifra de cesar, porém ainda não funciona.
-
-// var radiocesar = document.querySelector('#cesar')
-// var incremento = document.querySelector('.increm')
-// radiocesar.addEventListener('select', function(){
-//   incremento.style.display = "flex";
-// })
-
-
-//função de codificar em base64 que tbm nao funciona essa merda
-// 
-
-
-// let myDiv_1 = document.getElementById('div_1');
-//       let myDiv_2 = document.getElementById('div_2');
-      
-//       let str = "Git";
-//       let encodedStr = btoa(str);
-//       myDiv_1.innerHTML = encodedStr;
-
-
-//O btoa() pega uma string e a codifica em Base64, e atob() pega uma string codificada e a decodifica.
-
-// botao.innerText = 'teste'
-
-// codificar.addEventListener("click", function () {
-//   // if (radios[0].checked == true) {
-//   botao.innerText = 'Codificar Mensagem'
-// // } else {
-// //   botao.innerText = 'Decodificar Mensagem'
-// // }
-// })
-
-// var radios = document.querySelectorAll("input[name='bola']");
-// var botao = document.querySelectorById('botaoCodifica');
-
-// var selecao = select () => {
-//   var selecionado = document.querySelector('input[name="bola"]:checked').value;
-// botao.textContent = `${selecionado}`;
-// } 
-
-// botao.innerHTML = 'Agir';
-
-// radios.addEventListener(checked, function () {
-//       if (radios[0].checked == true) {
-//       botao.innerHTML('Codificar Mensagem')
-//     } else {
-//       botao.innerHTML('Decodificar Mensagem')
+    
 //     }
-  
-// })
-
-// function incremento () {
-//   var select = document.querySelector('#select');
-//   var value = select.options[select.selectIndex].value;
-//   if (value == base64) {
-//     var incremento = document.querySelector('.increm');
-//     incremento.style.display = 'flex';
-//   }
+//     return msgCifrada;
+     
 // }
-
-// incremento()
