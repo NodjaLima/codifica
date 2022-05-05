@@ -9,6 +9,7 @@ var incremento = document.querySelector('#inc');
 
 
 // mudar texto do botão de acordo com a seleção radio
+
 codificar.addEventListener("click", function(){
   botao.innerText = "Codificar Mensagem"
 })
@@ -27,27 +28,43 @@ selecionarCodigo.addEventListener('change', function(){
   }
 })
 
-//codificando Base64 e validando seleções
-
+//prevenindo comportamento default do botão
 
 botao.addEventListener('click', (function (noRecarg) {
   noRecarg.preventDefault();
   criptografar(msgEntrada.value) 
 }))
 
-function criptografar(texto) {
-  if (selecionarCodigo.value == 'base64' && botao.innerText == 'Codificar Mensagem') {
-    var resultCripto64 = btoa(texto);
+//codificando Base64 e validando seleções
+
+function cBase64 (texto) {
+  var resultCripto64 = btoa(texto);
     msgSaida.value = resultCripto64;
+}
+
+function dBase64 (texto) {
+  var resultDecripto64 = atob(texto) 
+    msgSaida.value = resultDecripto64;
+}
+
+function criptografar() {
+  
+  if (selecionarCodigo.value == 'base64' && botao.innerText == 'Codificar Mensagem') {
+    cBase64(msgEntrada.value);
+    
   } else if (selecionarCodigo.value == 'cifraDeCesar' && botao.innerText == 'Codificar Mensagem') {
+
     var resultCesar = cifraDeCesar(msgEntrada.value, +incremento.value);
     msgSaida.value = resultCesar;
+
   } else if (selecionarCodigo.value == 'base64' && botao.innerText == 'Decodificar Mensagem') {
-    var resultDecripto64 = atob(texto) 
-    msgSaida.value = resultDecripto64;
+    dBase64(msgEntrada.value)
+
   } else if (selecionarCodigo.value == 'cifraDeCesar' && botao.innerText == 'Decodificar Mensagem') {
+
     var resultDecriptoCesar = cesarDecifrado(msgEntrada.value, +incremento.value);
     msgSaida.value = resultDecriptoCesar;
+
   } else {
     alert('Verifique se marcou todas as opções do formulário');
   }
@@ -62,14 +79,15 @@ var entrada = texto.split('');
 var numeroCesar = [];
 var retornoCesar = [];
 for (i=0; i < entrada.length ; i++) {
-  if(entrada[i].charCodeAt() > 64 && entrada[i].charCodeAt() < 91) {
-    var aplicaCifra = (entrada[i].charCodeAt() - 65 + increment) % 26;
+  var h = entrada[i].charCodeAt()
+  if(h > 64 && h < 91) {
+    var aplicaCifra = (h - 65 + increment) % 26;
     numeroCesar.push(aplicaCifra + 65);
-  } else if (entrada[i].charCodeAt() >= 97 && entrada[i].charCodeAt() <= 122) {
-    aplicaCifra = (entrada[i].charCodeAt() - 97 + increment) % 26;
+  } else if (h >= 97 && h <= 122) {
+    aplicaCifra = (h - 97 + increment) % 26;
     numeroCesar.push(aplicaCifra + 97);
   } else {
-    numeroCesar.push(entrada[i].charCodeAt())
+    numeroCesar.push(h)
     }
   }
 
@@ -91,15 +109,16 @@ function cesarDecifrado(texto, increment) {
   var cesarNumero = []
 
   for (let i = 0; i < guardaMensagem.length; i++) {
-      if (guardaMensagem[i].charCodeAt() >= 65 && guardaMensagem[i].charCodeAt() <= 90) {
-          let testando = ((guardaMensagem[i].charCodeAt()) - 65 - increment) % 26
+    var h = guardaMensagem[i].charCodeAt();
+      if ( h >= 65 && h <= 90) {
+          let testando = ((h) - 65 - increment) % 26
           cesarNumero.push((testando < 0 ? testando + 26 : testando) + 65)
-      } else if (guardaMensagem[i].charCodeAt() >= 97 && guardaMensagem[i].charCodeAt() <= 122) {
-          let testando = ((guardaMensagem[i].charCodeAt()) - 97 - increment) % 26
+      } else if (h >= 97 && h <= 122) {
+          let testando = ((h) - 97 - increment) % 26
           cesarNumero.push((testando < 0 ? testando + 26 : testando) + 97)
       } else {
-          cesarNumero.push(guardaMensagem[i].charCodeAt())
-      }
+          cesarNumero.push(h)
+       }
   }
   for (var j = 0; cesarNumero.length > j; j++) {
       msgCriptografada.push(String.fromCharCode(cesarNumero[j]))
